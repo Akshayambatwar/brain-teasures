@@ -42,50 +42,7 @@ export default function BookDetailPage() {
 
   const handleBuyNow = async () => {
     if (!book) return;
-
-    // Load Razorpay script dynamically
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.onload = () => {
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_YOUR_KEY_ID", // Replace with your Razorpay key
-        amount: book.price * 100, // Amount in paise (multiply by 100)
-        currency: "USD",
-        name: "Brain Teasers Bookstore",
-        description: `Purchase: ${book.title}`,
-        image: "/next.svg", // Your logo URL
-        order_id: null, // You'll need to create an order on your backend
-        handler: function (response) {
-          alert(
-            `Payment successful! Payment ID: ${response.razorpay_payment_id}`
-          );
-          // Handle successful payment (e.g., redirect to success page)
-        },
-        prefill: {
-          name: "Customer Name",
-          email: "customer@example.com",
-          contact: "9999999999",
-        },
-        notes: {
-          address: "Book Purchase",
-        },
-        theme: {
-          color: "#ef4444", // Red color matching your Buy Now button
-        },
-        modal: {
-          ondismiss: function () {
-            alert("Payment cancelled");
-          },
-        },
-      };
-
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    };
-    script.onerror = () => {
-      alert("Failed to load Razorpay. Please check your internet connection.");
-    };
-    document.body.appendChild(script);
+    window.location.href = 'https://rzp.io/rzp/k8FudMk9'
   };
 
   if (loading) {
@@ -136,7 +93,7 @@ export default function BookDetailPage() {
                 className="object-cover"
                 priority
               />
-              
+
               {/* Navigation Arrows */}
               <button
                 onClick={prevImage}
@@ -189,11 +146,10 @@ export default function BookDetailPage() {
                 <button
                   key={index}
                   onClick={() => goToImage(index)}
-                  className={`relative cursor-pointer flex-shrink-0 w-24 h-32 rounded-lg overflow-hidden border-2 transition-all ${
-                    currentImageIndex === index
+                  className={`relative cursor-pointer flex-shrink-0 w-24 h-32 rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === index
                       ? "border-red-600 dark:border-red-500"
                       : "border-transparent hover:border-zinc-300 dark:hover:border-zinc-600"
-                  }`}
+                    }`}
                 >
                   <Image
                     src={image}

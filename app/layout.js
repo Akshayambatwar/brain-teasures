@@ -32,8 +32,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
+
         <CartProvider>
+          <Header />
           {children}
         </CartProvider>
         <Footer />

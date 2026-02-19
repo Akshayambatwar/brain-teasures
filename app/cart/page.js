@@ -21,6 +21,7 @@ export default function CartPage() {
     const [paymentStatus, setPaymentStatus] = useState(null);
     const [errors, setErrors] = useState({});
     const [showBulkModal, setShowBulkModal] = useState(false);
+    const [loading, setLoading] = useState(false);
     const SHIPPING = 99;
 
     const subtotal = cart.reduce(
@@ -30,7 +31,7 @@ export default function CartPage() {
 
     const total = subtotal + (cart.length ? SHIPPING : 0);
 
-    if (!cart.length) {
+    if (!cart.length && paymentStatus !== "success") {
         return (
             <div className="min-h-[300px] flex flex-col items-center justify-center px-4 text-center">
                 <h1 className="text-2xl font-semibold mb-2">Your cart is empty</h1>
@@ -88,6 +89,8 @@ export default function CartPage() {
         if (!isValid) {
             return;
         }
+        if (loading) return;
+        setLoading(true);
         try {
             const res = await fetch("/api/create-order", {
                 method: "POST",
@@ -112,18 +115,22 @@ export default function CartPage() {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(response),
                     });
-
+                    console.log(verifyRes,"verifyRes")
                     if (verifyRes.ok) {
-                        clearCart();
+
                         setPaymentStatus("success");
+                        setLoading(false);
+                        clearCart();
                     } else {
                         setPaymentStatus("failure");
+                        setLoading(false);
                     }
                 },
 
                 modal: {
                     ondismiss: function () {
                         setPaymentStatus("failure");
+                        setLoading(false);
                     },
                 },
             };
@@ -132,6 +139,7 @@ export default function CartPage() {
             rzp.open();
         } catch (error) {
             setPaymentStatus("failure");
+            setLoading(false);
         }
     };
 
@@ -270,9 +278,15 @@ export default function CartPage() {
                             ))}
 
                         </div>
-                        <button onClick={handlePayment} className="mt-8 w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold text-lg transition">
-                            Proceed to Payment
+                        <button
+                            onClick={handlePayment}
+                            disabled={loading}
+                            className={`w-full py-3 mt-3 rounded-lg text-white ${loading ? "bg-gray-400" : "bg-red-600 hover:bg-red-700"
+                                }`}
+                        >
+                            {loading ? "Processing..." : "Proceed to Payment"}
                         </button>
+
                     </div>
                 </div>
             </div>

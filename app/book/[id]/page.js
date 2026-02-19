@@ -59,12 +59,12 @@ export default function BookDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-zinc-800 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 py-12">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Back Button */}
         <button
           onClick={() => router.back()}
-          className="mb-8 cursor-pointer text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 flex items-center gap-2"
+          className="mb-8 cursor-pointer text-zinc-600  hover:text-zinc-900  flex items-center gap-2"
         >
           <svg
             className="w-5 h-5"
@@ -86,7 +86,7 @@ export default function BookDetailPage() {
           {/* Image Carousel */}
           <div className="space-y-4">
             {/* Main Image */}
-            <div className="relative aspect-[3/4] bg-white dark:bg-zinc-800 rounded-lg overflow-hidden shadow-xl">
+            <div className="relative aspect-[3/4] bg-white rounded-lg overflow-hidden shadow-xl">
               <Image
                 src={book.images[currentImageIndex]}
                 alt={`${book.title} - Image ${currentImageIndex + 1}`}
@@ -148,8 +148,8 @@ export default function BookDetailPage() {
                   key={index}
                   onClick={() => goToImage(index)}
                   className={`relative cursor-pointer flex-shrink-0 w-24 h-32 rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === index
-                    ? "border-red-600 dark:border-red-500"
-                    : "border-transparent hover:border-zinc-300 dark:hover:border-zinc-600"
+                    ? "border-red-600 "
+                    : "border-transparent hover:border-zinc-300 "
                     }`}
                 >
                   <Image
@@ -166,27 +166,27 @@ export default function BookDetailPage() {
           {/* Book Details */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-4xl font-bold text-zinc-900 dark:text-zinc-50 mb-2">
+              <h1 className="text-4xl font-bold text-zinc-900  mb-2">
                 {book.title}
               </h1>
-              <p className="text-xl text-zinc-600 dark:text-zinc-400 mb-4">
+              <p className="text-xl text-zinc-600  mb-4">
                 by {book.author}
               </p>
               <div className="flex justify-start items-end mb-6">
-                <div className="text-4xl font-bold text-zinc-900 dark:text-zinc-50 ">
+                <div className="text-4xl font-bold text-zinc-900  ">
                   ₹{book.price}
                 </div>
-                <div className="ml-1 text-sm font-normal text-zinc-900 dark:text-zinc-50">
+                <div className="ml-1 text-sm font-normal text-zinc-900 ">
                   {book.isShipping}
                 </div>
               </div>
             </div>
 
-            <div className="prose dark:prose-invert max-w-none">
-              <h2 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50 mb-4">
+            <div className="prose max-w-none">
+              <h2 className="text-2xl font-semibold text-zinc-900  mb-4">
                 Description
               </h2>
-              <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed text-lg">
+              <p className="text-zinc-700  leading-relaxed text-lg">
                 {book.fullDescription}
               </p>
             </div>
@@ -245,8 +245,8 @@ export default function BookDetailPage() {
 
 
             {/* Additional Info */}
-            <div className="pt-6 border-t border-zinc-200 dark:border-zinc-700">
-              <div className="space-y-3 text-zinc-600 dark:text-zinc-400">
+            <div className="pt-6 border-t border-zinc-200 ">
+              <div className="space-y-3 text-zinc-600 ">
                 <div className="flex items-center gap-3">
                   <svg
                     className="w-5 h-5"

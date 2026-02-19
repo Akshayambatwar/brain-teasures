@@ -4,14 +4,27 @@ import { createContext, useContext, useState } from "react";
 
 const CartContext = createContext();
 
+const MAX_ALLOWED = 5;
+
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
+  const getTotalQuantity = (items) =>
+    items.reduce((acc, item) => acc + item.quantity, 0);
+
   const addToCart = (book) => {
     setCart((prev) => {
+      const total = getTotalQuantity(prev);
+
+      if (total >= MAX_ALLOWED) {
+        return prev; // block
+      }
+
       const existing = prev.find((item) => item.id === book.id);
 
       if (existing) {
+        if (total >= MAX_ALLOWED) return prev;
+
         return prev.map((item) =>
           item.id === book.id
             ? { ...item, quantity: item.quantity + 1 }
@@ -24,20 +37,25 @@ export function CartProvider({ children }) {
   };
 
   const updateQuantity = (id, quantity) => {
-    if (quantity < 1) return;
+    setCart((prev) => {
+      const totalWithoutCurrent = prev.reduce((acc, item) => {
+        if (item.id !== id) return acc + item.quantity;
+        return acc;
+      }, 0);
 
-    setCart((prev) =>
-      prev.map((item) =>
+      if (totalWithoutCurrent + quantity > MAX_ALLOWED) {
+        return prev; // block
+      }
+
+      return prev.map((item) =>
         item.id === id ? { ...item, quantity } : item
-      )
-    );
+      );
+    });
   };
 
   const removeFromCart = (id) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
-
-  const clearCart = () => setCart([]);
 
   return (
     <CartContext.Provider
@@ -46,7 +64,7 @@ export function CartProvider({ children }) {
         addToCart,
         updateQuantity,
         removeFromCart,
-        clearCart,
+        MAX_ALLOWED,
       }}
     >
       {children}

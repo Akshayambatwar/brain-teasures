@@ -6,8 +6,9 @@ import Image from "next/image";
 import Lottie from "lottie-react";
 import successAnim from "@/public/Success.json";
 import failureAnim from "@/public/Failed.json";
+import BulkOrderModal from "../components/BulkOrderModal";
 export default function CartPage() {
-    const { cart, updateQuantity, removeFromCart } = useCart();
+    const { cart, updateQuantity, removeFromCart, MAX_ALLOWED } = useCart();
     const [customer, setCustomer] = useState({
         name: "",
         email: "",
@@ -19,6 +20,7 @@ export default function CartPage() {
     });
     const [paymentStatus, setPaymentStatus] = useState(null);
     const [errors, setErrors] = useState({});
+    const [showBulkModal, setShowBulkModal] = useState(false);
     const SHIPPING = 99;
 
     const subtotal = cart.reduce(
@@ -181,13 +183,28 @@ export default function CartPage() {
                                         </span>
 
                                         <button
-                                            onClick={() =>
-                                                updateQuantity(item.id, item.quantity + 1)
-                                            }
-                                            className="w-8 h-8 flex items-center justify-center rounded-full border hover:bg-zinc-100"
+                                            onClick={() => {
+                                                const total = cart.reduce(
+                                                    (acc, i) => acc + i.quantity,
+                                                    0
+                                                );
+
+                                                if (total >= MAX_ALLOWED) {
+                                                    setShowBulkModal(true);
+                                                    return;
+                                                }
+
+                                                updateQuantity(item.id, item.quantity + 1);
+                                            }}
+                                            className={`w-8 h-8 flex items-center justify-center rounded-full border transition
+    ${cart.reduce((acc, i) => acc + i.quantity, 0) >= MAX_ALLOWED
+                                                    ? "bg-gray-200 cursor-not-allowed"
+                                                    : "hover:bg-zinc-100"
+                                                }`}
                                         >
                                             +
                                         </button>
+
 
                                         <button
                                             onClick={() => removeFromCart(item.id)}
@@ -328,7 +345,10 @@ export default function CartPage() {
                     </div>
                 </div>
             )}
-
+            <BulkOrderModal
+                isOpen={showBulkModal}
+                onClose={() => setShowBulkModal(false)}
+            />
         </>
 
     );

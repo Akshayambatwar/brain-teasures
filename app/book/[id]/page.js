@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { books, getBookById } from "../../data/books";
 import Image from "next/image";
+import { useCart } from "@/app/context/CartContext";
 
 export default function BookDetailPage() {
   const params = useParams();
@@ -11,7 +12,8 @@ export default function BookDetailPage() {
   const [book, setBook] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
-
+  const { cart, addToCart, updateQuantity } = useCart();
+  const cartItem = cart.find((item) => item.id === book?.id);
   useEffect(() => {
     const bookData = getBookById(params.id);
     if (bookData) {
@@ -40,9 +42,8 @@ export default function BookDetailPage() {
     setCurrentImageIndex(index);
   };
 
-  const handleBuyNow = async () => {
-    if (!book) return;
-    window.location.href = 'https://rzp.io/rzp/k8FudMk9'
+  const handleAddToCart = () => {
+    addToCart(book);
   };
 
   if (loading) {
@@ -147,8 +148,8 @@ export default function BookDetailPage() {
                   key={index}
                   onClick={() => goToImage(index)}
                   className={`relative cursor-pointer flex-shrink-0 w-24 h-32 rounded-lg overflow-hidden border-2 transition-all ${currentImageIndex === index
-                      ? "border-red-600 dark:border-red-500"
-                      : "border-transparent hover:border-zinc-300 dark:hover:border-zinc-600"
+                    ? "border-red-600 dark:border-red-500"
+                    : "border-transparent hover:border-zinc-300 dark:hover:border-zinc-600"
                     }`}
                 >
                   <Image
@@ -171,8 +172,13 @@ export default function BookDetailPage() {
               <p className="text-xl text-zinc-600 dark:text-zinc-400 mb-4">
                 by {book.author}
               </p>
-              <div className="text-4xl font-bold text-zinc-900 dark:text-zinc-50 mb-6">
-                ${book.price}
+              <div className="flex justify-start items-end mb-6">
+                <div className="text-4xl font-bold text-zinc-900 dark:text-zinc-50 ">
+                  ₹{book.price}
+                </div>
+                <div className="ml-1 text-sm font-normal text-zinc-900 dark:text-zinc-50">
+                  {book.isShipping}
+                </div>
               </div>
             </div>
 
@@ -185,14 +191,58 @@ export default function BookDetailPage() {
               </p>
             </div>
 
-            <div className="pt-6">
-              <button
-                onClick={handleBuyNow}
-                className="w-full cursor-pointer bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
-              >
-                Buy Now
-              </button>
+            <div className="pt-6 space-y-4">
+
+              {!cartItem ? (
+                <button
+                  onClick={handleAddToCart}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition shadow-lg"
+                >
+                  Add to Cart
+                </button>
+              ) : (
+                <div className="space-y-4">
+
+                  {/* Quantity Controls */}
+                  <div className="flex items-center justify-center gap-4">
+
+                    <button
+                      onClick={() =>
+                        cartItem.quantity > 1 &&
+                        updateQuantity(book.id, cartItem.quantity - 1)
+                      }
+                      className="w-10 h-10 flex items-center justify-center rounded-full border text-xl hover:bg-zinc-100"
+                    >
+                      −
+                    </button>
+
+                    <span className="text-xl font-semibold">
+                      {cartItem.quantity}
+                    </span>
+
+                    <button
+                      onClick={() =>
+                        updateQuantity(book.id, cartItem.quantity + 1)
+                      }
+                      className="w-10 h-10 flex items-center justify-center rounded-full border text-xl hover:bg-zinc-100"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  {/* Go To Cart Button */}
+                  <button
+                    onClick={() => router.push("/cart")}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition"
+                  >
+                    Go to Cart
+                  </button>
+
+                </div>
+              )}
+
             </div>
+
 
             {/* Additional Info */}
             <div className="pt-6 border-t border-zinc-200 dark:border-zinc-700">
@@ -211,7 +261,7 @@ export default function BookDetailPage() {
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
-                  <span>Instant Digital Delivery</span>
+                  <span>Delivery: 4–5 business days</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <svg
@@ -243,7 +293,7 @@ export default function BookDetailPage() {
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
-                  <span>30-Day Money-Back Guarantee</span>
+                  <span>PAN India shipping</span>
                 </div>
               </div>
             </div>

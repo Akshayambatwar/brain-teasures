@@ -1,6 +1,9 @@
 import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
+import { CartProvider } from "./context/CartContext";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +33,14 @@ export default function RootLayout({ children }) {
         className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header />
-        {children}
+        <CartProvider>
+          {children}
+        </CartProvider>
+        <Footer />
+        <Script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

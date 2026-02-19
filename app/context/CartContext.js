@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 
@@ -8,6 +8,19 @@ const MAX_ALLOWED = 5;
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
+
+  // 🔹 Load cart from localStorage on first render
+  useEffect(() => {
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
+
+  // 🔹 Save cart to localStorage whenever cart changes
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   const getTotalQuantity = (items) =>
     items.reduce((acc, item) => acc + item.quantity, 0);
@@ -17,14 +30,12 @@ export function CartProvider({ children }) {
       const total = getTotalQuantity(prev);
 
       if (total >= MAX_ALLOWED) {
-        return prev; // block
+        return prev;
       }
 
       const existing = prev.find((item) => item.id === book.id);
 
       if (existing) {
-        if (total >= MAX_ALLOWED) return prev;
-
         return prev.map((item) =>
           item.id === book.id
             ? { ...item, quantity: item.quantity + 1 }
@@ -37,21 +48,20 @@ export function CartProvider({ children }) {
   };
 
   const updateQuantity = (id, quantity) => {
-    setCart((prev) => {
-      const totalWithoutCurrent = prev.reduce((acc, item) => {
-        if (item.id !== id) return acc + item.quantity;
-        return acc;
-      }, 0);
-
-
-      return prev.map((item) =>
+    setCart((prev) =>
+      prev.map((item) =>
         item.id === id ? { ...item, quantity } : item
-      );
-    });
+      )
+    );
   };
 
   const removeFromCart = (id) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const clearCart = () => {
+    setCart([]);
+    localStorage.removeItem("cart");
   };
 
   return (
@@ -62,6 +72,7 @@ export function CartProvider({ children }) {
         updateQuantity,
         removeFromCart,
         MAX_ALLOWED,
+        clearCart,
       }}
     >
       {children}

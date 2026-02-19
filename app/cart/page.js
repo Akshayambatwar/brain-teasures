@@ -8,7 +8,7 @@ import successAnim from "@/public/Success.json";
 import failureAnim from "@/public/Failed.json";
 import BulkOrderModal from "../components/BulkOrderModal";
 export default function CartPage() {
-    const { cart, updateQuantity, removeFromCart, MAX_ALLOWED } = useCart();
+    const { cart, updateQuantity, removeFromCart, MAX_ALLOWED, clearCart } = useCart();
     const [customer, setCustomer] = useState({
         name: "",
         email: "",
@@ -114,6 +114,7 @@ export default function CartPage() {
                     });
 
                     if (verifyRes.ok) {
+                        clearCart();
                         setPaymentStatus("success");
                     } else {
                         setPaymentStatus("failure");

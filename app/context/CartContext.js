@@ -43,9 +43,6 @@ export function CartProvider({ children }) {
         return acc;
       }, 0);
 
-      if (totalWithoutCurrent + quantity > MAX_ALLOWED) {
-        return prev; // block
-      }
 
       return prev.map((item) =>
         item.id === id ? { ...item, quantity } : item

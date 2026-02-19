@@ -12,7 +12,14 @@ export async function POST(req) {
   }
 
   const SHIPPING = 99;
+  const totalQty = items.reduce((acc, i) => acc + i.quantity, 0);
 
+  if (totalQty > 5) {
+    return NextResponse.json(
+      { error: "Bulk order not allowed" },
+      { status: 400 }
+    );
+  }
   let subtotal = 0;
   items.forEach((item) => {
     subtotal += item.price * item.quantity;

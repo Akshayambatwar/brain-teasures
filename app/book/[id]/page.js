@@ -43,13 +43,11 @@ export default function BookDetailPage() {
   const goToImage = (index) => {
     setCurrentImageIndex(index);
   };
-
+  const totalQuantity = cart.reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  );
   const handleAddToCart = () => {
-    const totalQuantity = cart.reduce(
-      (acc, item) => acc + item.quantity,
-      0
-    );
-
     if (totalQuantity >= MAX_ALLOWED) {
       setShowBulkModal(true);
       return;
@@ -57,6 +55,7 @@ export default function BookDetailPage() {
 
     addToCart(book);
   };
+
 
   if (loading) {
     return (
@@ -234,13 +233,19 @@ export default function BookDetailPage() {
                       </span>
 
                       <button
-                        onClick={() =>
-                          updateQuantity(book.id, cartItem.quantity + 1)
-                        }
+                        onClick={() => {
+                          if (totalQuantity >= MAX_ALLOWED) {
+                            setShowBulkModal(true);
+                            return;
+                          }
+
+                          updateQuantity(book.id, cartItem.quantity + 1);
+                        }}
                         className="w-10 h-10 flex items-center justify-center rounded-full border text-xl hover:bg-zinc-100"
                       >
                         +
                       </button>
+
                     </div>
 
                     {/* Go To Cart Button */}

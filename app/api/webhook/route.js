@@ -13,9 +13,9 @@ async function getRawBody(req) {
 
 export async function POST(req) {
   try {
-    const rawBody = await getRawBody(req);
-    const webhookSignature = req.headers.get("x-razorpay-signature");
+    const rawBody = await req.text();
 
+    const webhookSignature = req.headers.get("x-razorpay-signature");
     const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
     const expectedSignature = crypto
@@ -24,10 +24,7 @@ export async function POST(req) {
       .digest("hex");
 
     if (webhookSignature !== expectedSignature) {
-      return NextResponse.json(
-        { success: false, message: "Invalid signature" },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false }, { status: 400 });
     }
 
     const event = JSON.parse(rawBody.toString());

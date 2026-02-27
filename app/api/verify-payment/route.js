@@ -12,7 +12,6 @@ export async function POST(req) {
       razorpay_signature,
     } = body;
 
-    // 🔹 Basic validation
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       return NextResponse.json(
         { success: false, message: "Invalid payment data" },
@@ -20,7 +19,6 @@ export async function POST(req) {
       );
     }
 
-    // 🔹 Verify signature
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
 
     const expectedSign = crypto
@@ -42,7 +40,6 @@ export async function POST(req) {
       razorpayOrderId: razorpay_order_id,
     });
 
-    // 🔹 Order not found
     if (!existingOrder) {
       return NextResponse.json(
         { success: false, message: "Order not found" },
@@ -50,25 +47,8 @@ export async function POST(req) {
       );
     }
 
-    // 🔹 Prevent double payment update
-    if (existingOrder.status === "paid") {
-      return NextResponse.json({
-        success: true,
-        message: "Order already marked as paid",
-      });
-    }
-
-    // 🔹 Update order
-    await db.collection("orders").updateOne(
-      { razorpayOrderId: razorpay_order_id },
-      {
-        $set: {
-          status: "paid",
-          razorpayPaymentId: razorpay_payment_id,
-          paidAt: new Date(),
-        },
-      }
-    );
+    // ❌ DO NOT UPDATE DB HERE
+    // Webhook handles DB update
 
     return NextResponse.json({ success: true });
 

@@ -37,26 +37,40 @@ export async function POST(req) {
       const client = await clientPromise;
       const db = client.db("bookstore");
 
-      // 🔐 Only update if still pending
-      const updatedOrder = await db.collection("orders").findOneAndUpdate(
-        {
-          razorpayOrderId: orderId,
-          status: "pending", // prevents duplicate updates
-        },
+      const existingOrder = await db.collection("orders").findOne({
+        razorpayOrderId: orderId,
+      });
+
+      if (!existingOrder) {
+        console.error("Order not found");
+        return NextResponse.json({ success: false });
+      }
+
+      // If already paid, don't send email again
+      if (existingOrder.status === "paid") {
+        console.log("Order already paid, skipping email");
+        return NextResponse.json({ success: true });
+      }
+
+      // Update order
+      await db.collection("orders").updateOne(
+        { razorpayOrderId: orderId },
         {
           $set: {
             status: "paid",
             razorpayPaymentId: paymentId,
             paidAt: new Date(),
           },
-        },
-        { returnDocument: "after" }
+        }
       );
 
-      // If order was updated (not duplicate)
-      if (updatedOrder.value) {
-        await sendOrderConfirmation(updatedOrder.value);
-      }
+      console.log("Sending email to:", existingOrder.customer.email);
+
+      await sendOrderConfirmation({
+        ...existingOrder,
+        razorpayPaymentId: paymentId,
+        paidAt: new Date(),
+      });
     }
 
     return NextResponse.json({ success: true });

@@ -101,7 +101,13 @@ export default function AdminPage() {
                                                     )
                                                 );
                                             }}
-                                            className="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700"
+                                            disabled={order.status !== "paid"}
+                                            className={`px-3 py-1 rounded text-xs font-medium transition
+    ${order.status === "paid"
+                                                    ? "bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+                                                    : "bg-gray-300 text-gray-500 cursor-not-allowed opacity-60"
+                                                }
+  `}
                                         >
                                             Mark as Shipped
                                         </button>

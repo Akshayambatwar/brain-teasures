@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function sendOrderConfirmation(order) {
   try {
     await resend.emails.send({
-      from: "Brain Teasers <orders@yourdomain.com>",
+      from: "Brain Teasers <onboarding@resend.dev>",
       to: order.customer.email,
       subject: "Your Order Confirmation 🎉",
       html: `

@@ -29,3 +29,30 @@ export async function sendOrderConfirmation(order) {
     console.error("Email send error:", error);
   }
 }
+
+
+export async function sendShippedEmail(order) {
+  try {
+    await resend.emails.send({
+      from: "Brain Teasers <onboarding@resend.dev>", // change after domain verify
+      to: order.customer.email,
+      subject: "Your Order Has Been Shipped 🚚",
+      html: `
+        <h2>Hi ${order.customer.name},</h2>
+
+        <p>Great news! Your order has been shipped.</p>
+
+        <p><strong>Order ID:</strong> ${order.razorpayOrderId}</p>
+        <p><strong>Total:</strong> ₹${order.total}</p>
+
+        <p>It will reach you within 4–5 business days.</p>
+
+        <br/>
+        <p>Thank you for shopping with Brain Teasers.</p>
+      `,
+    });
+
+  } catch (error) {
+    console.error("Shipped email error:", error);
+  }
+}

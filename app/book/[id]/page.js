@@ -71,8 +71,8 @@ export default function BookDetailPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 py-12">
-        <div className="container mx-auto px-4 max-w-6xl">
+      <div className="bg-zinc-50 py-6">
+        <div className="max-w-5xl mx-auto px-4">
           {/* Back Button */}
           <button
             onClick={() => router.back()}
@@ -94,11 +94,11 @@ export default function BookDetailPage() {
             Back to Books
           </button>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Image Carousel */}
             <div className="space-y-4">
               {/* Main Image */}
-              <div className="relative aspect-[3/4] bg-white rounded-lg overflow-hidden shadow-xl">
+              <div className="relative aspect-[4/5] bg-white rounded-lg overflow-hidden shadow-md max-h-[520px]">
                 <Image
                   src={book.images[currentImageIndex]}
                   alt={`${book.title} - Image ${currentImageIndex + 1}`}
@@ -178,14 +178,14 @@ export default function BookDetailPage() {
             {/* Book Details */}
             <div className="space-y-6">
               <div>
-                <h1 className="text-4xl font-bold text-zinc-900  mb-2">
+                <h1 className="text-2xl md:text-3xl font-bold text-zinc-900  mb-2">
                   {book.title}
                 </h1>
                 <p className="text-xl text-zinc-600  mb-4">
                   by {book.author}
                 </p>
                 <div className="flex justify-start items-end mb-6">
-                  <div className="text-4xl font-bold text-zinc-900  ">
+                  <div className="text-2xl md:text-3xl font-bold text-zinc-900  ">
                     ₹{book.price}
                   </div>
                   <div className="ml-1 text-sm font-normal text-zinc-900 ">
@@ -228,7 +228,7 @@ export default function BookDetailPage() {
                         −
                       </button>
 
-                      <span className="text-xl font-semibold">
+                      <span className="text-base font-semibold">
                         {cartItem.quantity}
                       </span>
 
@@ -241,7 +241,7 @@ export default function BookDetailPage() {
 
                           updateQuantity(book.id, cartItem.quantity + 1);
                         }}
-                        className="w-10 h-10 flex items-center justify-center rounded-full border text-xl hover:bg-zinc-100"
+                        className="w-10 h-10 flex items-center justify-center rounded-full border text-base hover:bg-zinc-100"
                       >
                         +
                       </button>

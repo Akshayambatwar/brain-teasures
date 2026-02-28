@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import Image from "next/image";
 
 export default function Header() {
   const { cart } = useCart();
@@ -28,13 +29,24 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
 
         {/* Logo Section */}
-        <Link href="/" className="flex flex-col">
-          <h1 className="text-xl md:text-2xl font-bold text-zinc-900">
-            Brain Teasers
-          </h1>
-          <p className="text-xs md:text-sm text-zinc-500">
-            Thought-provoking books
-          </p>
+        <Link href="/" className="flex items-center gap-3">
+          <Image
+            src="/books/logo.png"
+            alt="Brain Teasers Logo"
+            width={40}
+            height={40}
+            className="object-contain"
+            priority
+          />
+
+          <div className="flex flex-col">
+            <h1 className="text-lg md:text-xl font-bold text-zinc-900">
+              Brain Teasers
+            </h1>
+            <p className="text-xs md:text-sm text-zinc-500">
+              Thought-provoking books
+            </p>
+          </div>
         </Link>
 
         {/* Cart Section */}

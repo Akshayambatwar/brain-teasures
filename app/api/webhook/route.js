@@ -27,7 +27,7 @@ export async function POST(req) {
       return NextResponse.json({ success: false }, { status: 400 });
     }
 
-    const event = JSON.parse(rawBody.toString());
+    const event = JSON.parse(rawBody);
 
     if (event.event === "payment.captured") {
       const orderId = event.payload.payment.entity.order_id;

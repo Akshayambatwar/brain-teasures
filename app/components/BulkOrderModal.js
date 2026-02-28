@@ -19,9 +19,9 @@ export default function BulkOrderModal({ isOpen, onClose }) {
           For bulk purchases, please contact us directly.
         </p>
 
-        <div className="mt-6 text-zinc-800 font-medium space-y-1">
-          <p>📞 +91 9876543210</p>
-          <p>📧 support@brainteasers.com</p>
+        <div className="mt-6 text-zinc-800 font-medium space-y-2">
+          <a href="tel">📞 +91 8149532127</a><br/>
+          <a href="mailto:brainteasers4all@gmail.com">📧 brainteasers4all@gmail.com</a>
         </div>
 
         <button

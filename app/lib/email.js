@@ -5,8 +5,9 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function sendOrderConfirmation(order) {
   try {
     await resend.emails.send({
-      from: "Brain Teasers <onboarding@resend.dev>",
+      from: "Brain Teasers <orders@mail.brain-teasers.co.in>",
       to: order.customer.email,
+      reply_to: "brainteasers4all@gmail.com",
       subject: "Your Order Confirmation 🎉",
       html: `
         <h2>Thank you ${order.customer.name}!</h2>
@@ -34,8 +35,9 @@ export async function sendOrderConfirmation(order) {
 export async function sendShippedEmail(order) {
   try {
     await resend.emails.send({
-      from: "Brain Teasers <onboarding@resend.dev>", // change after domain verify
+      from: "Brain Teasers <orders@mail.brain-teasers.co.in>", // change after domain verify
       to: order.customer.email,
+      reply_to: "brainteasers4all@gmail.com",
       subject: "Your Order Has Been Shipped 🚚",
       html: `
         <h2>Hi ${order.customer.name},</h2>

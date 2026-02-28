@@ -9,9 +9,9 @@ Key Features: 174 worksheets across topics apt for Critical thinking, logic, soc
     price: 499,
     isShipping: '+ Shipping',
     images: [
-      "/books/Brain-Teasers-Volume-1-Img-1.png",
-      "/books/Brain-Teasers-Volume-1-Img-2.png",
-      "/books/Brain-Teasers-Volume-1-Img-3.png",
+      "/books/Brain-Teasers-Volume-1-New-Img-1.png",
+      "/books/Brain-Teasers-Volume-1-New-Img-2.jpg",
+      "/books/Landing-Img-1.png",
     ],
     landingImage : "/books/Landing-Img-1.png"
   },
@@ -25,11 +25,11 @@ Key features: 90+ Logic, patterns, and early reasoning worksheets for ages 5-7.`
     price: 249,
     isShipping: '+ Shipping',
     images: [
-      "/books/Brain-teasers-For-Juniors-1-Img-1.png",
-      "/books/Brain-teasers-For-Juniors-1-Img-2.png",
-      "/books/Brain-teasers-For-Juniors-1-Img-3.png",
+      "/books/Brain-teasers-For-Juniors-1-New-Img-1.png",
+      "/books/Brain-teasers-For-Juniors-1-New-Img-2.png",
+      "/books/Landing-Img-2.png",
     ],
-    landingImage : "/books/Brain-Teasers-Volume-1-Img-1.png"
+    landingImage : "/books/Landing-Img-2.png"
 
   },
   {
@@ -41,10 +41,12 @@ Key features: 90+ Logic, patterns, and early reasoning worksheets for ages 5-7.`
     price: 149,
     isShipping: '+ Shipping',
     images: [
-      "/books/The-Write-Direction-Img-1.png",
-      "/books/The-Write-Direction-Img-2.png",
+      "/books/The-Write-Direction-New-Img-1.png",
+      "/books/The-Write-Direction-New-Img-2.png",
+      "/books/The-Write-Direction-New-Img-3.png",
+
     ],
-    landingImage : "/books/Brain-Teasers-Volume-1-Img-1.png"
+    landingImage : "/books/Landing-Img-3.png"
 
   },
 ];

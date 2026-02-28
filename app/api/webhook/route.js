@@ -23,9 +23,10 @@ export async function POST(req) {
       .update(rawBody)
       .digest("hex");
 
-    // if (webhookSignature !== expectedSignature) {
-    //   return NextResponse.json({ success: false }, { status: 400 });
-    // }
+    if (webhookSignature !== expectedSignature) {
+      console.error("Signature mismatch");
+      return NextResponse.json({ success: false }, { status: 400 });
+    }
 
     const event = JSON.parse(rawBody);
 

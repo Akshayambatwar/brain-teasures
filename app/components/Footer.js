@@ -23,7 +23,7 @@ export default function Footer() {
               Contact
             </h3>
             <ul className="space-y-2 text-sm">
-              <li>📧 Email: <a href="mailto:brainteasers4all@gmail.com" className="hover:text-white">your@email.com</a></li>
+              <li>📧 Email: <a href="mailto:brainteasers4all@gmail.com" className="hover:text-white">brainteasers4all@gmail.com</a></li>
               {/* <li>📞 Phone: <a href="tel:+919999999999" className="hover:text-white">+91 99999 99999</a></li> */}
               <li>📍 India (PAN India Shipping)</li>
             </ul>

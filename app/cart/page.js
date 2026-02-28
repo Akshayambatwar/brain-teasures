@@ -115,7 +115,7 @@ export default function CartPage() {
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(response),
                     });
-                    console.log(verifyRes,"verifyRes")
+                    console.log(verifyRes, "verifyRes")
                     if (verifyRes.ok) {
 
                         setPaymentStatus("success");

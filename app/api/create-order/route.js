@@ -1,7 +1,7 @@
 import Razorpay from "razorpay";
 import { NextResponse } from "next/server";
 import clientPromise from "@/app/lib/mongodb";
-import { books } from "@/app/data/books";
+import { ObjectId } from "mongodb";
 
 export async function POST(req) {
   try {
@@ -12,9 +12,8 @@ export async function POST(req) {
       return NextResponse.json({ error: "Cart empty" }, { status: 400 });
     }
 
-    const SHIPPING = 99;
-    const totalQty = items.reduce((acc, i) => acc + i.quantity, 0);
 
+    const totalQty = items.reduce((acc, i) => acc + i.quantity, 0);
     if (totalQty > 5) {
       return NextResponse.json(
         { error: "Bulk order not allowed" },
@@ -22,25 +21,36 @@ export async function POST(req) {
       );
     }
 
-    // 🔒 Calculate price securely from server data
+    const client = await clientPromise;
+    const db = client.db("bookstore");
+
+    const settings = await db.collection("settings").findOne({
+      key: "store_config",
+    });
+
+    if (!settings) {
+      throw new Error("Store config not found");
+    }
+
+    const SHIPPING = settings.shipping;
     let subtotal = 0;
 
-    items.forEach((item) => {
-      const product = books.find((b) => b.id === item.id);
+    for (const item of items) {
+      const product = await db.collection("books").findOne({
+        _id: new ObjectId(item._id),
+        active: true,
+      });
 
       if (!product) {
         throw new Error("Invalid product");
       }
 
       subtotal += product.price * item.quantity;
-    });
+    }
 
     const total = subtotal + SHIPPING;
 
-    const client = await clientPromise;
-    const db = client.db("bookstore");
-
-    // 🔁 Prevent duplicate pending orders
+    // Prevent duplicate pending orders
     const existing = await db.collection("orders").findOne({
       "customer.email": customer.email,
       status: "pending",

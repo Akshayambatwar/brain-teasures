@@ -143,7 +143,6 @@ export default function CartPage() {
         }
     };
 
-
     return (
         <>
             <div className="min-h-screen bg-zinc-100 py-6 px-4">
@@ -157,7 +156,7 @@ export default function CartPage() {
 
                         {cart.map((item) => (
                             <div
-                                key={item.id}
+                                key={item._id}
                                 className="bg-white rounded-xl shadow-sm p-4 sm:p-6 flex flex-col sm:flex-row gap-4 sm:gap-6"
                             >
                                 {/* Image */}
@@ -180,7 +179,7 @@ export default function CartPage() {
                                         <button
                                             onClick={() =>
                                                 item.quantity > 1 &&
-                                                updateQuantity(item.id, item.quantity - 1)
+                                                updateQuantity(item._id, item.quantity - 1)
                                             }
                                             className="w-8 h-8 flex items-center justify-center rounded-full border hover:bg-zinc-100"
                                         >
@@ -203,7 +202,7 @@ export default function CartPage() {
                                                     return;
                                                 }
 
-                                                updateQuantity(item.id, item.quantity + 1);
+                                                updateQuantity(item._id, item.quantity + 1);
                                             }}
                                             className={`w-8 h-8 flex items-center justify-center rounded-full border transition
     ${cart.reduce((acc, i) => acc + i.quantity, 0) >= MAX_ALLOWED
@@ -216,7 +215,7 @@ export default function CartPage() {
 
 
                                         <button
-                                            onClick={() => removeFromCart(item.id)}
+                                            onClick={() => removeFromCart(item._id)}
                                             className="ml-4 text-sm text-red-600"
                                         >
                                             Remove

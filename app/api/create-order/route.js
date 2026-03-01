@@ -50,16 +50,6 @@ export async function POST(req) {
 
     const total = subtotal + SHIPPING;
 
-    // Prevent duplicate pending orders
-    const existing = await db.collection("orders").findOne({
-      "customer.email": customer.email,
-      status: "pending",
-    });
-
-    if (existing) {
-      return NextResponse.json({ id: existing.razorpayOrderId });
-    }
-
     const razorpay = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,
       key_secret: process.env.RAZORPAY_KEY_SECRET,

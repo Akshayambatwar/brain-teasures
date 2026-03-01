@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import Image from "next/image";
 import Lottie from "lottie-react";
@@ -22,14 +22,24 @@ export default function CartPage() {
     const [errors, setErrors] = useState({});
     const [showBulkModal, setShowBulkModal] = useState(false);
     const [loading, setLoading] = useState(false);
-    const SHIPPING = 99;
+    const [shipping, setShipping] = useState(0);
+
+    useEffect(() => {
+        fetch("/api/settings")
+            .then(res => res.json())
+            .then(data => {
+                if (data?.shipping) {
+                    setShipping(data.shipping);
+                }
+            });
+    }, []);
 
     const subtotal = cart.reduce(
         (acc, item) => acc + item.price * item.quantity,
         0
     );
 
-    const total = subtotal + (cart.length ? SHIPPING : 0);
+    const total = subtotal + (cart.length ? shipping  : 0);
 
     if (!cart.length && paymentStatus !== "success") {
         return (
@@ -245,7 +255,7 @@ export default function CartPage() {
 
                             <div className="flex justify-between">
                                 <span>Shipping</span>
-                                <span>₹{SHIPPING}</span>
+                                <span>₹{shipping}</span>
                             </div>
 
                             <div className="border-t pt-4 flex justify-between font-semibold text-lg text-zinc-900">

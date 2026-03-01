@@ -20,7 +20,7 @@ export default function BulkOrderModal({ isOpen, onClose }) {
         </p>
 
         <div className="mt-6 text-zinc-800 font-medium space-y-2">
-          <a href="tel">📞 +91 8149532127</a><br/>
+          <a href="tel:+918149532127">📞 +918149532127</a><br/>
           <a href="mailto:brainteasers4all@gmail.com">📧 brainteasers4all@gmail.com</a>
         </div>
 

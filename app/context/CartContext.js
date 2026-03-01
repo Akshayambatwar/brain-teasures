@@ -3,13 +3,12 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
-
 const MAX_ALLOWED = 5;
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
-  // 🔹 Load cart from localStorage on first render
+  // Load cart from localStorage
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
     if (storedCart) {
@@ -17,7 +16,7 @@ export function CartProvider({ children }) {
     }
   }, []);
 
-  // 🔹 Save cart to localStorage whenever cart changes
+  // Save cart to localStorage
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
@@ -28,35 +27,43 @@ export function CartProvider({ children }) {
   const addToCart = (book) => {
     setCart((prev) => {
       const total = getTotalQuantity(prev);
+      if (total >= MAX_ALLOWED) return prev;
 
-      if (total >= MAX_ALLOWED) {
-        return prev;
-      }
-
-      const existing = prev.find((item) => item.id === book.id);
+      const existing = prev.find(
+        (item) => item._id === book._id
+      );
 
       if (existing) {
         return prev.map((item) =>
-          item.id === book.id
+          item._id === book._id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
 
-      return [...prev, { ...book, quantity: 1 }];
+      return [
+        ...prev,
+        {
+          ...book,
+          _id: book._id,
+          quantity: 1,
+        },
+      ];
     });
   };
 
-  const updateQuantity = (id, quantity) => {
+  const updateQuantity = (_id, quantity) => {
     setCart((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, quantity } : item
+        item._id === _id ? { ...item, quantity } : item
       )
     );
   };
 
-  const removeFromCart = (id) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
+  const removeFromCart = (_id) => {
+    setCart((prev) =>
+      prev.filter((item) => item._id !== _id)
+    );
   };
 
   const clearCart = () => {

@@ -36,10 +36,10 @@ export default function Footer() {
               <li>
                 📞 Phone:{" "}
                 <a
-                  href="tel:+918149532127"
+                  href="tel:+919119532127"
                   className="hover:text-white"
                 >
-                  +918149532127
+                  +919119532127
                 </a>
               </li>
 

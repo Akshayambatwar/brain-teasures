@@ -44,7 +44,7 @@ export default function Header() {
               Brain Teasers
             </h1>
             <p className="text-xs md:text-sm text-zinc-500">
-              Thought-provoking books
+              Puzzles that puzzle, Minds that Marvel.
             </p>
           </div>
         </Link>

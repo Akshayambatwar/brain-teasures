@@ -7,6 +7,8 @@ import Lottie from "lottie-react";
 import successAnim from "@/public/Success.json";
 import failureAnim from "@/public/Failed.json";
 import BulkOrderModal from "../components/BulkOrderModal";
+import Recommendations from "../components/Recommendations";
+
 export default function CartPage() {
     const { cart, updateQuantity, removeFromCart, MAX_ALLOWED, clearCart } = useCart();
     const [customer, setCustomer] = useState({
@@ -191,7 +193,7 @@ export default function CartPage() {
                                                 item.quantity > 1 &&
                                                 updateQuantity(item._id, item.quantity - 1)
                                             }
-                                            className="w-8 h-8 flex items-center justify-center rounded-full border hover:bg-zinc-100"
+                                            className="w-8 h-8 cursor-pointer flex items-center justify-center rounded-full border hover:bg-zinc-100"
                                         >
                                             −
                                         </button>
@@ -214,7 +216,7 @@ export default function CartPage() {
 
                                                 updateQuantity(item._id, item.quantity + 1);
                                             }}
-                                            className={`w-8 h-8 flex items-center justify-center rounded-full border transition
+                                            className={`w-8 cursor-pointer h-8 flex items-center justify-center rounded-full border transition
     ${cart.reduce((acc, i) => acc + i.quantity, 0) >= MAX_ALLOWED
                                                     ? "bg-gray-200 cursor-not-allowed"
                                                     : "hover:bg-zinc-100"
@@ -226,7 +228,7 @@ export default function CartPage() {
 
                                         <button
                                             onClick={() => removeFromCart(item._id)}
-                                            className="ml-4 text-sm text-red-600"
+                                            className="ml-4 cursor-pointer text-sm text-red-600"
                                         >
                                             Remove
                                         </button>
@@ -297,6 +299,11 @@ export default function CartPage() {
                         </button>
 
                     </div>
+                </div>
+
+                {/* Recommendations Section */}
+                <div className="max-w-6xl mx-auto mt-4">
+                    <Recommendations excludeIds={cart.map(item => item._id)} />
                 </div>
             </div>
             {paymentStatus && (

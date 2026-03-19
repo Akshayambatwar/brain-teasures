@@ -20,12 +20,12 @@ export default function BulkOrderModal({ isOpen, onClose }) {
         </p>
 
         <div className="mt-6 text-zinc-800 font-medium space-y-2">
-          <a href="tel:+918149532127">📞 +918149532127</a><br/>
+          <a href="tel:+919119532127">📞 +919119532127</a><br/>
           <a href="mailto:brainteasers4all@gmail.com">📧 brainteasers4all@gmail.com</a>
         </div>
 
         <button
-          onClick={onClose}
+          onClick={onClose} 
           className="mt-8 bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg transition"
         >
           Close

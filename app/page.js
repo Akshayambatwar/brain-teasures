@@ -4,6 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Loader from "./components/Loader";
+import Testimonials from "./components/Testimonials";
+import FAQ from "./components/FAQ";
+import IntroSection from "./components/IntroSection";
 
 export default function Home() {
   const [books, setBooks] = useState([]);
@@ -13,7 +16,7 @@ export default function Home() {
     fetch("/api/books")
       .then((res) => res.json())
       .then((data) => {
-        setBooks(data);
+        setBooks(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -29,7 +32,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100">
-      <main className="container mx-auto px-4 py-12 max-w-7xl">
+      <main className="container mx-auto px-4 py-8 md:py-12 max-w-7xl">
+        {/* Intro Section */}
+        <IntroSection />
+
         {/* Books Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {books.map((book) => (
@@ -81,6 +87,12 @@ export default function Home() {
             </div>
           ))}
         </div>
+
+        {/* Testimonials Section */}
+        <Testimonials />
+
+        {/* FAQ Section */}
+        <FAQ />
       </main>
     </div>
   );

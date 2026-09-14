@@ -55,6 +55,25 @@ export default async function Page({ params }) {
     },
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://brain-teasers.co.in",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: book.title,
+        item: `https://brain-teasers.co.in/book/${book.slug}`,
+      },
+    ],
+  };
+
   return (
     <>
       {/* ✅ JSON-LD Schema (Server Rendered) */}
@@ -62,6 +81,12 @@ export default async function Page({ params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(productSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema),
         }}
       />
 

@@ -35,28 +35,63 @@ export const metadata = {
     "critical thinking books",
     "logic puzzles for kids",
     "educational workbooks India",
+    "Nilshree books",
+    "Brain Teasers for Juniors",
   ],
   metadataBase: new URL("https://brain-teasers.co.in"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Brain Teasers Books for Kids",
+    title: "Brain Teasers Books for Kids | Educational Workbooks",
     description:
-      "Improve your child's problem-solving skills with fun brain teaser workbooks.",
+      "Buy brain teaser books and educational workbooks for kids to improve critical thinking and creativity. PAN India delivery.",
     url: "https://brain-teasers.co.in",
     siteName: "Brain Teasers Books",
     images: [
       {
         url: "/books/Landing-Img-1.png",
-        width: 800,
-        height: 600,
+        width: 1200,
+        height: 630,
+        alt: "Brain Teasers Books for Kids",
       },
     ],
+    locale: "en_IN",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Brain Teasers Books for Kids",
+    description: "Improve your child's problem-solving skills with fun brain teaser workbooks.",
+    images: ["/books/Landing-Img-1.png"],
   },
 };
 
 export default function RootLayout({ children }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Brain Teasers Books",
+    "url": "https://brain-teasers.co.in",
+    "logo": "https://brain-teasers.co.in/logo.png",
+    "description": "Educational workbooks and brain teaser books for children.",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+91-YOUR-NUMBER",
+      "contactType": "customer service",
+      "areaServed": "IN",
+      "availableLanguage": "en"
+    }
+  };
+
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >

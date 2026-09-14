@@ -25,6 +25,10 @@ export default function CartPage() {
     const [showBulkModal, setShowBulkModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [shipping, setShipping] = useState(0);
+    const [couponInput, setCouponInput] = useState("");
+    const [appliedCoupon, setAppliedCoupon] = useState(null);
+    const [couponError, setCouponError] = useState("");
+    const [isApplying, setIsApplying] = useState(false);
 
     useEffect(() => {
         fetch("/api/settings")
@@ -41,7 +45,39 @@ export default function CartPage() {
         0
     );
 
-    const total = subtotal + (cart.length ? shipping  : 0);
+    const discount = appliedCoupon ? appliedCoupon.discount : 0;
+    const total = subtotal + (cart.length ? shipping : 0) - discount;
+
+    const handleApplyCoupon = async () => {
+        if (!couponInput.trim()) return;
+        setIsApplying(true);
+        setCouponError("");
+
+        try {
+            const res = await fetch("/api/validate-coupon", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ code: couponInput, subtotal }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                setAppliedCoupon(data);
+                setCouponInput("");
+            } else {
+                setCouponError(data.error || "Invalid coupon");
+            }
+        } catch (err) {
+            setCouponError("Failed to validate coupon");
+        } finally {
+            setIsApplying(false);
+        }
+    };
+
+    const removeCoupon = () => {
+        setAppliedCoupon(null);
+    };
 
     if (!cart.length && paymentStatus !== "success") {
         return (
@@ -107,7 +143,7 @@ export default function CartPage() {
             const res = await fetch("/api/create-order", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ items: cart, customer }),
+                body: JSON.stringify({ items: cart, customer, couponCode: appliedCoupon?.code }),
             });
 
             if (!res.ok) {
@@ -260,11 +296,56 @@ export default function CartPage() {
                                 <span>₹{shipping}</span>
                             </div>
 
+                            {appliedCoupon && (
+                                <div className="flex justify-between text-green-600">
+                                    <div className="flex items-center gap-2">
+                                        <span>
+                                            {appliedCoupon.type === "shipping" ? "Free Delivery" : `Discount (${appliedCoupon.code})`}
+                                        </span>
+                                        <button 
+                                            onClick={removeCoupon}
+                                            className="text-xs bg-zinc-100 hover:bg-zinc-200 px-1.5 py-0.5 rounded text-zinc-600"
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                    <span>−₹{discount}</span>
+                                </div>
+                            )}
+
                             <div className="border-t pt-4 flex justify-between font-semibold text-lg text-zinc-900">
                                 <span>Total</span>
                                 <span>₹{total}</span>
                             </div>
                         </div>
+
+                        {/* Coupon Section */}
+                        {!appliedCoupon && (
+                            <div className="mt-6 border-t pt-6">
+                                <label className="text-sm font-medium text-zinc-700 mb-2 block">
+                                    Have a coupon code?
+                                </label>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Enter code"
+                                        value={couponInput}
+                                        onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                                        className="flex-1 border border-zinc-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+                                    />
+                                    <button
+                                        onClick={handleApplyCoupon}
+                                        disabled={isApplying || !couponInput.trim()}
+                                        className="bg-zinc-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-zinc-800 disabled:opacity-50"
+                                    >
+                                        {isApplying ? "..." : "Apply"}
+                                    </button>
+                                </div>
+                                {couponError && (
+                                    <p className="text-red-500 text-xs mt-2">{couponError}</p>
+                                )}
+                            </div>
+                        )}
                         <div className="space-y-4 mt-8">
                             <h2 className="text-xl font-semibold">Shipping Details</h2>
 

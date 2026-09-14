@@ -1,34 +1,24 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import Loader from "./components/Loader";
+import clientPromise from "@/app/lib/mongodb";
 import Testimonials from "./components/Testimonials";
 import FAQ from "./components/FAQ";
 import IntroSection from "./components/IntroSection";
 
-export default function Home() {
-  const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch("/api/books")
-      .then((res) => res.json())
-      .then((data) => {
-        setBooks(Array.isArray(data) ? data : []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100">
-        <Loader />
-      </div>
-    );
+async function getBooks() {
+  try {
+    const client = await clientPromise;
+    const db = client.db("bookstore");
+    const data = await db.collection("books").find({ active: true }).sort({ createdAt: -1 }).toArray();
+    return JSON.parse(JSON.stringify(data));
+  } catch (error) {
+    console.error("Fetch books error:", error);
+    return [];
   }
+}
+
+export default async function Home() {
+  const books = await getBooks();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100">
@@ -45,6 +35,11 @@ export default function Home() {
             >
               {/* Book Cover */}
               <div className="relative h-64 bg-zinc-100">
+                {book.isNewRelease && (
+                  <span className="absolute top-2 left-2 z-10 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                    New Release
+                  </span>
+                )}
                 <Image
                   src={book.landingImage}
                   alt={book.title}

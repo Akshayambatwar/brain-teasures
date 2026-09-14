@@ -39,7 +39,7 @@ export default function Footer() {
                   href="tel:+919119532127"
                   className="hover:text-white"
                 >
-                  +919119532127
+                  +91 9119532127
                 </a>
               </li>
 

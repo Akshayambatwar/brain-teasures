@@ -49,6 +49,60 @@ Key features: 90+ Logic, patterns, and early reasoning worksheets for ages 5-7.`
     ],
     landingImage: "/books/Landing-Img-3.png",
   },
+  {
+    id: 4,
+    title: "Brain Teasers: Visual Detective",
+    author: "Nilshree Yelulkar",
+    description:
+      "Visual discrimination activity book, observation puzzles for kids, brain teaser workbooks. Sharpen focus, attention, and critical thinking.",
+    fullDescription: `Target Age: 4–9 Years | Format: A5 Size, Spiral Bound (Lies Flat)
+
+Key Learning Benefits: Visual Discrimination, Focus & Attention, Critical Thinking, Logic & Reasoning
+
+Product Description:
+
+Looking for engaging observation puzzles for kids? Brain Teasers: Visual Detective turns screen time into skill-building time! Packed with find-the-clue challenges, pattern matching, and odd-one-out activities, this visual discrimination activity book sharpens focus, attention, and critical thinking. Designed in a compact A5 spiral-bound format, the pages lie completely flat so young learners can write, draw, and solve comfortably at home or on the go. Perfect for preschoolers, kindergartners, and early elementary students.`,
+    price: 129,
+    isShipping: "+ Shipping",
+    images: ["/books/Brain_Teasers_Visual_Detective.png"],
+    landingImage: "/books/Brain_Teasers_Visual_Detective.png",
+  },
+  {
+    id: 5,
+    title: "Brain Teasers: Smart Hearts",
+    author: "Nilshree Yelulkar",
+    description:
+      "Social emotional learning activity book, SEL workbooks for kids, emotions and feelings activity book. Nurture kindness and emotional growth.",
+    fullDescription: `Target Age: 4–9 Years | Format: A5 Size, Spiral Bound (Lies Flat)
+
+Key Learning Benefits: Emotional Intelligence, Self-Awareness, Empathy, Social Skills
+
+Product Description:
+
+Nurture kindness and emotional growth with Brain Teasers: Smart Hearts, an essential social emotional learning (SEL) activity book for young children. Featuring fun, relatable worksheets, this workbook helps kids understand emotions, manage feelings, build strong relationships, and make thoughtful decisions. The durable A5 spiral binding provides a flat, hassle-free surface for writing, coloring, and self-reflection. An ideal learning tool for parents, educators, and counselors supporting early childhood emotional intelligence.`,
+    price: 129,
+    isShipping: "+ Shipping",
+    images: ["/books/Brain_Teasers_Smart_Hearts.png"],
+    landingImage: "/books/Brain_Teasers_Smart_Hearts.png",
+  },
+  {
+    id: 6,
+    title: "Brain Teasers: Color with a Twist",
+    author: "Nilshree Yelulkar",
+    description:
+      "Spot the difference coloring book, educational coloring book for kids, fine motor skills workbook. Combine creative expression with critical thinking!",
+    fullDescription: `Target Age: 4–9 Years | Format: A5 Size, Spiral Bound (Lies Flat)
+
+Key Learning Benefits: Fine Motor Skills, Observation, Creative Expression, Visual Comparison
+
+Product Description:
+
+Combine creative expression with critical thinking! Brain Teasers: Color with a Twist is an educational spot-the-difference coloring book that goes beyond standard coloring pages. Children observe, compare, and discover hidden details while practicing fine motor control and visual analysis. Thanks to the lie-flat A5 spiral-bound spine, kids enjoy a smooth, lay-flat coloring experience without fighting stubborn book folds—making it the perfect travel activity book for children ages 4 to 9.`,
+    price: 129,
+    isShipping: "+ Shipping",
+    images: ["/books/Brain_Teasers_Color_with_a_Twist.png"],
+    landingImage: "/books/Brain_Teasers_Color_with_a_Twist.png",
+  },
 ];
 
 export function getBookById(id) {

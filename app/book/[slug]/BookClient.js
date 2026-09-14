@@ -176,9 +176,10 @@ export default function BookDetailPage() {
 
               <div>
                 <h2 className="text-xl font-semibold mb-3">Description</h2>
-                <p className="text-zinc-700 leading-relaxed">
-                  {book.fullDescription}
-                </p>
+                <div 
+                  className="text-zinc-700 leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: book.fullDescription }}
+                />
               </div>
 
               {/* Cart Section */}

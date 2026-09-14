@@ -6,12 +6,11 @@ import { ObjectId } from "mongodb";
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { items, customer } = body;
+    const { items, customer, couponCode } = body;
 
     if (!items.length) {
       return NextResponse.json({ error: "Cart empty" }, { status: 400 });
     }
-
 
     const totalQty = items.reduce((acc, i) => acc + i.quantity, 0);
     if (totalQty > 5) {
@@ -48,7 +47,34 @@ export async function POST(req) {
       subtotal += product.price * item.quantity;
     }
 
-    const total = subtotal + SHIPPING;
+    // Handle Coupon
+    let discount = 0;
+    let appliedCoupon = null;
+    if (couponCode) {
+      const coupon = await db.collection("coupons").findOne({
+        code: couponCode.toUpperCase(),
+        active: true,
+      });
+
+      if (coupon) {
+        const isExpired = coupon.expiryDate && new Date(coupon.expiryDate) < new Date();
+        const isBelowMin = coupon.minOrderAmount && subtotal < coupon.minOrderAmount;
+
+        if (!isExpired && !isBelowMin) {
+          if (coupon.type === "percentage") {
+            discount = Math.round((subtotal * coupon.value) / 100);
+          } else if (coupon.type === "fixed") {
+            discount = coupon.value;
+          } else if (coupon.type === "shipping") {
+            discount = SHIPPING;
+          }
+          discount = Math.min(discount, subtotal + SHIPPING); // Ensure discount doesn't exceed total cost
+          appliedCoupon = coupon.code;
+        }
+      }
+    }
+
+    const total = subtotal + SHIPPING - discount;
 
     const razorpay = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,
@@ -62,6 +88,7 @@ export async function POST(req) {
       notes: {
         email: customer.email,
         name: customer.name,
+        coupon: appliedCoupon || "none",
       },
     });
 
@@ -72,6 +99,8 @@ export async function POST(req) {
       customer,
       subtotal,
       shipping: SHIPPING,
+      discount,
+      couponCode: appliedCoupon,
       total,
       createdAt: new Date(),
     });

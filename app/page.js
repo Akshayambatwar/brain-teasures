@@ -5,6 +5,8 @@ import Testimonials from "./components/Testimonials";
 import FAQ from "./components/FAQ";
 import IntroSection from "./components/IntroSection";
 
+export const dynamic = "force-dynamic";
+
 async function getBooks() {
   try {
     const client = await clientPromise;

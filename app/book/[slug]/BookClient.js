@@ -19,9 +19,7 @@ export default function BookDetailPage() {
 
   const { cart, addToCart, updateQuantity, MAX_ALLOWED } = useCart();
 
-  const cartItem = cart.find(
-    (item) => item._id === book?._id
-  );
+  const cartItem = cart.find((item) => item._id === book?._id);
 
   useEffect(() => {
     if (!params?.slug) return;
@@ -49,7 +47,7 @@ export default function BookDetailPage() {
   const prevImage = () => {
     if (book) {
       setCurrentImageIndex(
-        (prev) => (prev - 1 + book.images.length) % book.images.length
+        (prev) => (prev - 1 + book.images.length) % book.images.length,
       );
     }
   };
@@ -58,10 +56,7 @@ export default function BookDetailPage() {
     setCurrentImageIndex(index);
   };
 
-  const totalQuantity = cart.reduce(
-    (acc, item) => acc + item.quantity,
-    0
-  );
+  const totalQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   const handleAddToCart = () => {
     if (totalQuantity >= MAX_ALLOWED) {
@@ -86,20 +81,28 @@ export default function BookDetailPage() {
     <>
       <div className="bg-zinc-50 py-6">
         <div className="max-w-5xl mx-auto px-4">
-
           {/* Back Button */}
           <button
             onClick={() => router.back()}
             className="mb-8 cursor-pointer text-zinc-600 hover:text-zinc-900 flex items-center gap-2"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             Back to Books
           </button>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-
             {/* Image Section */}
             <div className="space-y-4">
               <div className="relative aspect-[4/5] bg-white rounded-lg overflow-hidden shadow-md max-h-[520px]">
@@ -107,7 +110,7 @@ export default function BookDetailPage() {
                   src={book.images[currentImageIndex]}
                   alt={`${book.title} - Image ${currentImageIndex + 1}`}
                   fill
-                  className="object-cover"
+                  className="object-fill"
                   priority
                 />
 
@@ -154,15 +157,12 @@ export default function BookDetailPage() {
 
             {/* Details Section */}
             <div className="space-y-6">
-
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold text-zinc-900 mb-2">
                   {book.title}
                 </h1>
 
-                <p className="text-xl text-zinc-600 mb-4">
-                  by {book.author}
-                </p>
+                <p className="text-xl text-zinc-600 mb-4">by {book.author}</p>
 
                 <div className="flex items-end mb-6">
                   <div className="text-2xl md:text-3xl font-bold text-zinc-900">
@@ -176,7 +176,7 @@ export default function BookDetailPage() {
 
               <div>
                 <h2 className="text-xl font-semibold mb-3">Description</h2>
-                <div 
+                <div
                   className="text-zinc-700 leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: book.fullDescription }}
                 />
@@ -184,7 +184,6 @@ export default function BookDetailPage() {
 
               {/* Cart Section */}
               <div className="pt-6 space-y-4">
-
                 {!cartItem ? (
                   <button
                     onClick={handleAddToCart}
@@ -194,7 +193,6 @@ export default function BookDetailPage() {
                   </button>
                 ) : (
                   <div className="space-y-4">
-
                     <div className="flex items-center justify-center gap-4">
                       <button
                         onClick={() =>
@@ -228,18 +226,14 @@ export default function BookDetailPage() {
                     >
                       Go to Cart
                     </button>
-
                   </div>
                 )}
-
               </div>
-
             </div>
           </div>
 
           {/* Recommendations Section */}
           <Recommendations excludeIds={[book._id]} />
-
         </div>
       </div>
 
@@ -250,4 +244,3 @@ export default function BookDetailPage() {
     </>
   );
 }
-
